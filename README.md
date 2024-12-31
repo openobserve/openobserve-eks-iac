@@ -30,7 +30,7 @@ State Management (terraform.tfstate): state file will be moved to S3 and DynamoD
 
 This release consists terraform files and other files that help you to build an EKS and deploy OpenObserve. The only manual intervention will be to configure your DNS in Route53 by grabbing the NLB.
 
-## OpenTofu companitbility
+## OpenTofu compatibility
 
 To use this repository with opentofu, you need to modify provider.tf and then use the Makefile that is placed under opentofu directory. 
 
