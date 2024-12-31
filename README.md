@@ -41,6 +41,7 @@ Before you begin, ensure that the following tools are installed:
 - [Terraform](https://www.terraform.io/downloads.html)
 - [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
 - [Infracost](https://www.infracost.io/docs/)
+- [OpenTofu](https://opentofu.org/docs/intro/install/)
 
 ### Environment Variables
 
