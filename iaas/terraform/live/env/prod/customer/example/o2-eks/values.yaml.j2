@@ -296,7 +296,7 @@ config:
   ZO_S3_MAX_IDLE_PER_HOST: "0"
   ZO_USAGE_REPORTING_ENABLED: "true"
   ZO_USAGE_REPORTING_MODE: "local" # local or both
-  ZO_USAGE_REPORTING_URL: "https://monitor.dev.zinclabs.dev/api/o_xyz/usage/_json"
+  ZO_USAGE_REPORTING_URL: "https://monitor.dev.zinclabs.dev/api/${secret_name}/usage/_json"
   ZO_USAGE_REPORTING_CREDS: "cm9vdEBtb25pdG9yMS5jb206TW1pdDVSWEdRc2E3SkZyQQ=="
   ZO_USAGE_ORG: "_meta"
   ZO_USAGE_BATCH_SIZE: "2000"
