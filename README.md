@@ -121,7 +121,7 @@ For example:
 make o2_pre_setup ENV=prod CUSTOMER_NAME=example AWS_PROFILE=my-aws-profile
 ```
 
-### 6. Run Pre Setup to install dependencies (`o2_deployment`)
+### 6. Run deployment command to deploy OpenObserve on EKS (`o2_deployment`)
 
 After pre deployment, you can deploy helm chart using `o2_deployment`.
 
