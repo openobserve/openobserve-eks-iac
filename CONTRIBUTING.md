@@ -44,7 +44,6 @@ All contributors are expected to adhere to the following guidelines to maintain 
 1. **Be Respectful:** Treat everyone with respect, regardless of their level of experience or background.
 2. **Be Collaborative:** Aim to work together to solve problems and improve the project.
 3. **Provide Constructive Feedback:** When reviewing code or providing feedback, be constructive and offer suggestions for improvement.
-4. **Respect the Code of Conduct:** All participants must follow the [Code of Conduct](CODE_OF_CONDUCT.md) outlined in this repository.
 
 Violations of these expectations may result in actions such as a warning or removal from the project, depending on the severity of the issue.
 
