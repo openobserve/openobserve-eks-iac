@@ -77,3 +77,24 @@ variable "secret_name" {
   description = "The secrets for OpenObserve"
   default     = "test-secret"
 }
+
+# Tagging variables
+variable "customer_tag" {
+  description = "Customer name for tagging purposes"
+  default     = "EXAMPLE_CUSTOMER"
+}
+
+variable "environment" {
+  description = "Environment (dev, staging, prod)"
+  default     = "dev"
+}
+
+variable "project_name" {
+  description = "Project name for tagging"
+  default     = "OpenObserve"
+}
+
+variable "contact_address" {
+  description = "Contact email address for the resources"
+  default     = "Observability.Platform@EXAMPLE_CUSTOMER.ai"
+}

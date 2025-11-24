@@ -4,16 +4,28 @@ module "vpc" {
   azs     = ["${var.region}a", "${var.region}b", "${var.region}c"]
   private_subnets = ["10.1.1.0/24", "10.1.2.0/24", "10.1.4.0/24"]
   public_subnets  = ["10.1.101.0/24", "10.1.102.0/24", "10.1.103.0/24"]
+
+  tags = merge(local.common_tags, {
+    Name = "${var.cluster_name}-vpc"
+  })
 }
 
 resource "aws_eip" "nat_eip" {
   #domain = vpc
   vpc = true
+
+  tags = merge(local.common_tags, {
+    Name = "${var.cluster_name}-nat-eip"
+  })
 }
 
 resource "aws_nat_gateway" "nat_gateway" {
   allocation_id = aws_eip.nat_eip.id
   subnet_id     = module.vpc.public_subnets[0]  # Create the NAT Gateway in the first public subnet
+
+  tags = merge(local.common_tags, {
+    Name = "${var.cluster_name}-nat-gateway"
+  })
 }
 
 resource "aws_route" "private_route_to_nat" {
@@ -34,6 +46,11 @@ module "eks" {
   cluster_endpoint_public_access = true
   cluster_endpoint_private_access = true
   cluster_endpoint_public_access_cidrs    = ["0.0.0.0/0"]
+
+  tags = merge(local.compute_tags, {
+    Name     = var.cluster_name
+    Workload = "EKS Cluster for OpenObserve"
+  })
 }
 
 # Retrieve EKS Cluster Information to get the OIDC URL
@@ -68,6 +85,10 @@ resource "aws_iam_role" "ebs_csi_driver_role" {
       }
     ]
   })
+
+  tags = merge(local.common_tags, {
+    Name = "AmazonEKS_EBS_CSI_Driver_Role"
+  })
 }
 
 # Attach AmazonEBSCSIDriverPolicy to the IAM Role
@@ -93,7 +114,7 @@ resource "aws_iam_role" "vpc_cni_role" {
       {
         Effect = "Allow",
         Principal = {
-          Federated = module.eks.oidc_provider_arn 
+          Federated = module.eks.oidc_provider_arn
         },
         Action = "sts:AssumeRoleWithWebIdentity",
         Condition = {
@@ -104,6 +125,10 @@ resource "aws_iam_role" "vpc_cni_role" {
         }
       }
     ]
+  })
+
+  tags = merge(local.common_tags, {
+    Name = "AmazonEKS_VPC_CNI_Role"
   })
 }
 
@@ -136,6 +161,10 @@ resource "aws_iam_role" "eks_node_group_role" {
       }
     ]
   })
+
+  tags = merge(local.common_tags, {
+    Name = "eks-node-group-role"
+  })
 }
 
 resource "aws_eks_node_group" "managed_node_group" {
@@ -154,15 +183,15 @@ resource "aws_eks_node_group" "managed_node_group" {
   ami_type       = "AL2023_ARM_64_STANDARD"  # For Graviton instances
   disk_size      = 20 # 20 GB
 
-  labels = {
-    "purpose" = "OpenObserve"
-  }
+  labels = merge(local.kubernetes_labels, {
+    purpose = "OpenObserve"
+  })
 
-  tags = {
-    "Environment" = "production"
-    "Name"        = "${var.customer_name}"
-  }
-  
+  tags = merge(local.compute_tags, {
+    Name     = "${var.cluster_name}-node-group"
+    Workload = "EKS worker nodes for OpenObserve workloads"
+  })
+
 }
 
 resource "aws_eks_addon" "kube_proxy" {

@@ -3,6 +3,10 @@ resource "aws_db_subnet_group" "rds_subnet_group" {
   name        = "rds-subnet-group"
   subnet_ids  = module.vpc.private_subnets
   description = "Subnet group for RDS"
+
+  tags = merge(local.database_tags, {
+    Name = "rds-subnet-group"
+  })
 }
 
 # Create a security group for RDS
@@ -22,6 +26,10 @@ resource "aws_security_group" "rds_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]  # Allow outgoing traffic to anywhere
   }
+
+  tags = merge(local.database_tags, {
+    Name = "rds-security-group"
+  })
 }
 
 resource "random_password" "db_password" {
@@ -35,6 +43,10 @@ resource "random_pet" "db_secret_suffix" {}
 resource "aws_secretsmanager_secret" "db_password_secret" {
   name        = "o2-rds-secr-${random_pet.db_secret_suffix.id}"
   description = "Database admin password for RDS instance"
+
+  tags = merge(local.database_tags, {
+    Name = "o2-rds-secret"
+  })
 }
 
 resource "aws_secretsmanager_secret_version" "db_password_secret_version" {
@@ -56,4 +68,8 @@ resource "aws_db_instance" "openobserve_rds" {
   vpc_security_group_ids = [aws_security_group.rds_sg.id]
   db_subnet_group_name = aws_db_subnet_group.rds_subnet_group.name
   skip_final_snapshot  = true
+
+  tags = merge(local.database_tags, {
+    Name = "openobserve-rds"
+  })
 }
