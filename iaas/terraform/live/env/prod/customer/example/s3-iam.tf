@@ -2,6 +2,10 @@ data "aws_caller_identity" "current" {}
 
 resource "aws_s3_bucket" "openobserve_bucket" {
   bucket = "${var.bucket_prefix}-${var.random_number}"
+
+  tags = merge(local.storage_tags, {
+    Name = "${var.bucket_prefix}-${var.random_number}"
+  })
 }
 
 resource "aws_iam_policy" "openobserve_policy" {
@@ -70,6 +74,10 @@ resource "aws_iam_role" "openobserve_role" {
   ]
 }
 EOF
+
+  tags = merge(local.common_tags, {
+    Name = "OpenObserveRole-${var.customer_name}"
+  })
 }
 
 
